@@ -51,13 +51,9 @@ saveImage fn image = BS.writeFile fn image
 createTexture :: Size -> PixelData Int -> IO (Maybe TextureObject) 
 createTexture (Size cx cy) pixels = do
 	[tex] <- genObjectNames 1 --
-	-- rowAlignment $= Unpack 1  --
 	textureBinding Texture2D $= Just tex --
-	-- generateMipmap Texture2D $= Enabled
 	build2DMipmaps Texture2D RGBA' (fromIntegral cx) (fromIntegral cy) pixels
 	textureFilter Texture2D $= ((Linear', Just Nearest), Linear')
-	-- textureWrapMode Texture2D S $= (Repeated, Repeat)
-	-- textureWrapMode Texture2D T $= (Repeated, Repeat)
 	textureFunction $= Modulate
 	-- free ptr
 	return $ Just tex
