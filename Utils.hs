@@ -26,7 +26,7 @@ module Southpaw.Michelangelo.Utils where
 ---------------------------------------------------------------------------------------------------
 -- We'll need these
 ---------------------------------------------------------------------------------------------------
-import Graphics.UI.GLUT
+-- import Graphics.UI.GLUT
 -- import Graphics.SceneGraph.ReadImage (readImage)
 -- import Graphics.SceneGraph.TGA
 import Codec.Picture
@@ -46,17 +46,16 @@ saveImage :: FilePath -> BS.ByteString -> IO ()
 saveImage fn image = BS.writeFile fn image
 
 
-
 -- | 
-createTexture :: Size -> PixelData Int -> IO (Maybe TextureObject) 
-createTexture (Size cx cy) pixels = do
-	[tex] <- genObjectNames 1 --
-	textureBinding Texture2D $= Just tex --
-	build2DMipmaps Texture2D RGBA' (fromIntegral cx) (fromIntegral cy) pixels
-	textureFilter Texture2D $= ((Linear', Just Nearest), Linear')
-	textureFunction $= Modulate
-	-- free ptr
-	return $ Just tex
+-- createTexture :: Size -> PixelData Int -> IO (Maybe TextureObject) 
+-- createTexture (Size cx cy) pixels = do
+-- 	[tex] <- genObjectNames 1 --
+-- 	textureBinding Texture2D $= Just tex --
+-- 	build2DMipmaps Texture2D RGBA' (fromIntegral cx) (fromIntegral cy) pixels
+-- 	textureFilter Texture2D $= ((Linear', Just Nearest), Linear')
+-- 	textureFunction $= Modulate
+-- 	-- free ptr
+-- 	return $ Just tex
 
 
 -- |
