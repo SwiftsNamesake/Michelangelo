@@ -29,9 +29,9 @@ module Southpaw.Michelangelo.Utils where
 -- import Graphics.UI.GLUT
 -- import Graphics.SceneGraph.ReadImage (readImage)
 -- import Graphics.SceneGraph.TGA
-import Codec.Picture
-import Control.Monad (when)
-import Data.Word
+-- JuicyTextures, JuicyPixels
+-- import Codec.Picture
+-- import Control.Monad (when)
 -- import Foreign.Marshal.Alloc
 
 import qualified Data.ByteString as BS
