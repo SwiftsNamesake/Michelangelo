@@ -33,7 +33,7 @@ module Southpaw.Michelangelo.Utils where
 -- import Codec.Picture
 -- import Control.Monad (when)
 -- import Foreign.Marshal.Alloc
-
+-- import Graphics.GLUtil.JuicyTextures
 import qualified Data.ByteString as BS
 
 
