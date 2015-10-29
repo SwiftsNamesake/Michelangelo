@@ -1,41 +1,41 @@
 -- |
--- Module      : Southpaw.Michelangelo.Shaders
+-- Module      : Graphics.Michelangelo.Shaders
 -- Description : OpenGL shader utilities
 -- Copyright   : (c) Jonatan H Sundqvist, 2015
 -- License     : MIT
 -- Maintainer  : Jonatan H Sundqvist
 -- Stability   : experimental|stable
 -- Portability : POSIX (not sure)
--- 
+--
 
 -- Created July 27 2015
 
--- TODO | - 
---        - 
+-- TODO | -
+--        -
 
 -- SPEC | -
 --        -
 
 
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- Pragmas
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 {-# LANGUAGE TypeSynonymInstances #-} --
 {-# LANGUAGE FlexibleInstances    #-} --
 
 
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- API
----------------------------------------------------------------------------------------------------
-module Southpaw.Michelangelo.Shaders where
+--------------------------------------------------------------------------------------------------------------------------------------------
+module Graphics.Michelangelo.Shaders where
 
 
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 import qualified Graphics.Rendering.OpenGL as GL
 import Graphics.Rendering.OpenGL (($=))
 
@@ -51,9 +51,9 @@ import Linear.Quaternion
 import Linear.V3
 import Linear.V4
 
-import Foreign.Storable (Storable)
+import           Foreign.Storable                 (Storable)
+import           Foreign.Ptr                      (castPtr, Ptr())
 import qualified Foreign.Marshal.Utils as Marshal (with)
-import Foreign.Ptr (castPtr, Ptr())
 
 import qualified Data.Map as Map
 
@@ -65,18 +65,18 @@ import Text.Printf
 
 
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- Types
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- |
 data ShaderProgram = ShaderProgram { _program    :: GL.Program,
-	                                 _attributes :: Map.Map String (GL.AttribLocation,  GL.VariableType),
-                                     _uniforms   :: Map.Map String (GL.UniformLocation, GL.VariableType) }
+	                                   _attributes :: Map.Map String (GL.AttribLocation,  GL.VariableType),
+                                     _uniforms   :: Map.Map String (GL.UniformLocation, GL.VariableType)}
 
 
 -- |
--- type Uniform   = (GL.UniformLocation, UniformValue)         -- 
-type Attribute = (GL.AttribLocation,  GL.BufferObject, Int) -- TODO: Are there any non-buffer attribute types, separate type (?) 
+-- type Uniform   = (GL.UniformLocation, UniformValue)         --
+type Attribute = (GL.AttribLocation,  GL.BufferObject, Int) -- TODO: Are there any non-buffer attribute types, separate type (?)
 
 
 -- |
@@ -102,9 +102,9 @@ instance GL.Uniform (Int) where
 
 
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- Functions
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- |
 -- TODO: Improve control flow
 -- TODO: Improve error checking (eg. which logs belong to which part, check errors at each stage?)
@@ -182,9 +182,9 @@ loadShaderProgram vpath ppath = do
 
 
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- Uniforms
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- |
 -- TODO: Better naming conventions
 -- TOOD: All uniform types (matrices, vectors, scalars, variable length)

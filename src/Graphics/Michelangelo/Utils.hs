@@ -1,31 +1,31 @@
 -- |
--- Module      : Southpaw.Michelangelo.Utils
+-- Module      : Graphics.Michelangelo.Utils
 -- Description : Utilities for doing 3D graphics with OpenGL
 -- Copyright   : (c) Jonatan H Sundqvist, 2015
 -- License     : MIT
 -- Maintainer  : Jonatan H Sundqvist
 -- Stability   : experimental|stable
 -- Portability : POSIX (not sure)
--- 
+--
 
 -- Created July 20 2015
 -- Adapted from http://hackage.haskell.org/package/scenegraph-0.1.0.1/docs/src/Graphics-SceneGraph-Textures.html#getAndCreateTextures
 
--- TODO | - 
---        - 
+-- TODO | -
+--        -
 
 -- SPEC | -
 --        -
 
 
 
-module Southpaw.Michelangelo.Utils where
+module Graphics.Michelangelo.Utils where
 
 
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- import Graphics.UI.GLUT
 -- import Graphics.SceneGraph.ReadImage (readImage)
 -- import Graphics.SceneGraph.TGA
@@ -38,16 +38,16 @@ import qualified Data.ByteString as BS
 
 
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- Functions
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 -- |
 saveImage :: FilePath -> BS.ByteString -> IO ()
 saveImage fn image = BS.writeFile fn image
 
 
--- | 
--- createTexture :: Size -> PixelData Int -> IO (Maybe TextureObject) 
+-- |
+-- createTexture :: Size -> PixelData Int -> IO (Maybe TextureObject)
 -- createTexture (Size cx cy) pixels = do
 -- 	[tex] <- genObjectNames 1 --
 -- 	textureBinding Texture2D $= Just tex --
@@ -60,7 +60,7 @@ saveImage fn image = BS.writeFile fn image
 
 -- |
 -- createTextures :: [(Size, PixelData Int)] -> IO [Maybe TextureObject]
--- createTextures fn = return 
+-- createTextures fn = return
 
 
 -- -- read a list of images and returns a list of textures

@@ -10,7 +10,7 @@ name:                Michelangelo
 -- PVP summary:      +-+------- breaking API changes
 --                   | | +----- non-breaking API additions
 --                   | | | +--- code changes with no API change
-version:             0.1.0.0
+version:             0.1.0.1
 
 -- A short (one-line) description of the package.
 synopsis:            OpenGL for dummies
@@ -40,7 +40,7 @@ build-type:          Simple
 
 -- Extra files to be distributed with the package, such as examples or a
 -- README.
--- extra-source-files:
+extra-source-files:  README.md
 
 -- Constraint on the version of Cabal needed to build this package.
 cabal-version:       >=1.10
@@ -48,8 +48,8 @@ cabal-version:       >=1.10
 
 library
   -- Modules exported by the library.
-  exposed-modules:     Graphics.Michelangelo.Utils, Graphics.Michelangelo.Transformations, Graphics.Michelangelo.Shapes,
-                       Graphics.Michelangelo.Shaders, Graphics.Michelangelo.Scene, Graphics.Michelangelo.Mesh, Entity, Graphics.Michelangelo.Camera
+  exposed-modules:     Graphics.Michelangelo.Utils, Graphics.Michelangelo.Transformations, Graphics.Michelangelo.Shapes, Graphics.Michelangelo.Shaders,
+                       Graphics.Michelangelo.Scene, Graphics.Michelangelo.Mesh,            Graphics.Michelangelo.Entity, Graphics.Michelangelo.Camera
 
   -- Modules included in this library but not exported.
   -- other-modules:
@@ -58,7 +58,15 @@ library
   other-extensions:    TypeSynonymInstances, FlexibleInstances
 
   -- Other library packages from which modules are imported.
-  build-depends:       base >=4.7 && <4.8, bytestring >=0.10 && <0.11, linear >=1.20 && <1.21, OpenGL >=2.13 && <2.14, GLUtil >=0.8 && <0.9, OpenGLRaw >=2.5 && <2.6, containers >=0.5 && <0.6, lens >=4.13 && <4.14, Southpaw >=0.1 && <0.2
+  build-depends:       base <= 4.8.1.0,
+                       lens <= 4.13.0.0,
+                       bytestring,
+                       linear,
+                       OpenGL,
+                       GLUtil,
+                       OpenGLRaw,
+                       containers,
+                       WaveFront
 
   -- Directories containing source files.
   hs-source-dirs:      src
