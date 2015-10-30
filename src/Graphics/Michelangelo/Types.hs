@@ -1,5 +1,5 @@
 -- |
--- Module      : Graphics.Michelangelo.Types.hs
+-- Module      : Graphics.Michelangelo.Types
 -- Description :
 -- Copyright   : (c) Jonatan H Sundqvist, 2015
 -- License     : MIT
@@ -28,7 +28,7 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- API
 --------------------------------------------------------------------------------------------------------------------------------------------
-module Graphics.Michelangelo.Types.hs where
+module Graphics.Michelangelo.Types where
 
 
 
