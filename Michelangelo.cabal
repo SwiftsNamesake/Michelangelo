@@ -10,7 +10,7 @@ name:                Michelangelo
 -- PVP summary:      +-+------- breaking API changes
 --                   | | +----- non-breaking API additions
 --                   | | | +--- code changes with no API change
-version:             0.1.0.1
+version:             0.1.0.2
 
 -- A short (one-line) description of the package.
 synopsis:            OpenGL for dummies
@@ -52,8 +52,9 @@ source-repository head
 
 library
   -- Modules exported by the library.
-  exposed-modules:     Graphics.Michelangelo.Utils, Graphics.Michelangelo.Transformations, Graphics.Michelangelo.Shapes, Graphics.Michelangelo.Shaders,
-                       Graphics.Michelangelo.Scene, Graphics.Michelangelo.Mesh,            Graphics.Michelangelo.Entity, Graphics.Michelangelo.Camera
+  exposed-modules:     Graphics.Michelangelo.Types,   Graphics.Michelangelo.Utils, Graphics.Michelangelo.Transformations, Graphics.Michelangelo.Shapes,
+                       Graphics.Michelangelo.Shaders, Graphics.Michelangelo.Scene, Graphics.Michelangelo.Mesh,            Graphics.Michelangelo.Entity,
+                       Graphics.Michelangelo.Camera
 
   -- Modules included in this library but not exported.
   -- other-modules:

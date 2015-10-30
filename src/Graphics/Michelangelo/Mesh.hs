@@ -45,28 +45,8 @@ import qualified Graphics.GLUtil as GLUtil --
 import Graphics.WaveFront.Load       as WFL   --
 import Graphics.WaveFront.Parsers    as WF    --
 
+import Graphics.Michelangelo.Types
 import Graphics.Michelangelo.Shaders as Shade --
-
-
-
---------------------------------------------------------------------------------------------------------------------------------------------
--- Types
---------------------------------------------------------------------------------------------------------------------------------------------
--- |
--- TODO: Include shader program, attributes, uniforms, etc. (?)
--- TODO: Store render function (?)
--- TODO: Restructure (?)
--- TODO: Metadata (?)
-data Mesh = Mesh { texture    :: Maybe GL.TextureObject,   -- TODO: Allow more than one texture (?)
-                   primitive  :: GL.PrimitiveMode,         --
-                   attributes :: Map.Map String Attribute, --
-                   uniforms   :: Map.Map String (GL.UniformLocation, UniformValue),   --
-                   shader     :: GL.Program,               --
-                   prepare    :: Maybe (Mesh -> IO ()),    -- Optional rendering setup function
-                   centre     :: V3 Float,                 --
-                   bounds     :: WF.BoundingBox Float,     --
-                   size       :: Int                       --
-                 } --deriving (Show)
 
 
 

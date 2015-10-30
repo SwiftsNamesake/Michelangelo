@@ -36,6 +36,8 @@ module Graphics.Michelangelo.Utils where
 -- import Graphics.GLUtil.JuicyTextures
 import qualified Data.ByteString as BS
 
+import Graphics.Michelangelo.Types
+
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------

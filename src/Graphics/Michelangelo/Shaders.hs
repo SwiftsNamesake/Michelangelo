@@ -63,42 +63,7 @@ import Control.Monad (forM)
 
 import Text.Printf
 
-
-
---------------------------------------------------------------------------------------------------------------------------------------------
--- Types
---------------------------------------------------------------------------------------------------------------------------------------------
--- |
-data ShaderProgram = ShaderProgram { _program    :: GL.Program,
-	                                   _attributes :: Map.Map String (GL.AttribLocation,  GL.VariableType),
-                                     _uniforms   :: Map.Map String (GL.UniformLocation, GL.VariableType)}
-
-
--- |
--- type Uniform   = (GL.UniformLocation, UniformValue)         --
-type Attribute = (GL.AttribLocation,  GL.BufferObject, Int) -- TODO: Are there any non-buffer attribute types, separate type (?)
-
-
--- |
--- TODO: Make polymorphic (?)
--- TODO: Refactor
--- TODO: Implement uniformv
--- TODO: Find out how to read uniform value
--- instance GL.UniformComponent a => GL.Uniform (M44 a) where
-instance GL.Uniform (M44 Float) where
-	uniform (GL.UniformLocation loc) = GL.makeStateVar (error "Not implemented") (\u -> Marshal.with (transpose u) (\ptr -> GLRaw.glUniformMatrix4fv loc 1 0 (castPtr (ptr :: Ptr (M44 Float)))))
-   -- uniformv loc count = uniform3v location count . (castPtr :: Ptr (Vertex3 b) -> Ptr b)
-
-
-instance GL.Uniform (Float) where
-	uniform (GL.UniformLocation loc) = GL.makeStateVar (error "Not implemented") (\f -> Marshal.with f (\ptr -> GLRaw.glUniform1fv loc 1 (castPtr (ptr :: Ptr (Float)))))
-   -- uniformv loc count = uniform3v location count . (castPtr :: Ptr (Vertex3 b) -> Ptr b)
-
-
--- |
-instance GL.Uniform (Int) where
-	uniform (GL.UniformLocation loc) = GL.makeStateVar (error "Not implemented") (\i -> Marshal.with i (\ptr -> GLRaw.glUniform1iv loc 1 (castPtr (ptr :: Ptr (Int)))))
-   -- uniformv loc count = uniform3v location count . (castPtr :: Ptr (Vertex3 b) -> Ptr b)
+import Graphics.Michelangelo.Types
 
 
 
