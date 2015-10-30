@@ -150,14 +150,7 @@ loadShaderProgram vpath ppath = do
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- Uniforms
 --------------------------------------------------------------------------------------------------------------------------------------------
--- |
--- TODO: Better naming conventions
--- TOOD: All uniform types (matrices, vectors, scalars, variable length)
-data UniformValue = UMatrix44 (M44 Float) |
-                    UVec3     (V3 Float)  |
-                    UFloat     Float      |
-                    UInt       Int
-                    deriving (Show)
+
 
 
 -- |

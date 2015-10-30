@@ -57,19 +57,19 @@ import Graphics.Michelangelo.Shaders as Shade --
 -- renderMesh :: Mesh -> IO ()
 renderMesh :: Mesh -> IO ()
 renderMesh mesh = do
-	GLUtil.printErrorMsg "Entering renderMesh"
-	-- return $ (prepare mesh) <*> Just mesh
-	case prepare mesh of
-		Just action -> action mesh
-		_           -> return ()
-	GLUtil.printErrorMsg "Shader program set"
+  GLUtil.printErrorMsg "Entering renderMesh"
+  -- return $ (prepare mesh) <*> Just mesh
+  case prepare mesh of
+    Just action -> action mesh
+    _           -> return ()
+  GLUtil.printErrorMsg "Shader program set"
 
-	withAttributes mesh $ \ _ -> do
-		GLUtil.printErrorMsg "Entering withAttributes action"
-		Shade.setShaderUniforms (shader mesh) (Map.elems $ uniforms mesh) --
-		GLUtil.printErrorMsg "Uniforms set"
-		GL.drawArrays (primitive mesh) 0 (fromIntegral $ size mesh)       --
-		GLUtil.printErrorMsg "Arrays drawn"
+  withAttributes mesh $ \ _ -> do
+    GLUtil.printErrorMsg "Entering withAttributes action"
+    Shade.setShaderUniforms (shader mesh) (Map.elems $ uniforms mesh) --
+    GLUtil.printErrorMsg "Uniforms set"
+    GL.drawArrays (primitive mesh) 0 (fromIntegral $ size mesh)       --
+    GLUtil.printErrorMsg "Arrays drawn"
 
 
 -- |
@@ -81,42 +81,42 @@ renderMesh mesh = do
 -- TODO: Are there any attributes that are NOT buffers (?)
 bufferAttribute :: GL.BufferObject -> GL.AttribLocation -> Int -> IO ()
 bufferAttribute buffer loc count = do
-	GL.vertexAttribArray loc     $= GL.Enabled                                                                            --
-	GL.bindBuffer GL.ArrayBuffer $= Just buffer                                                                           --
-	GL.vertexAttribPointer loc   $= (GL.ToFloat, GL.VertexArrayDescriptor (fromIntegral count) GL.Float 0 GLUtil.offset0) --
+  GL.vertexAttribArray loc     $= GL.Enabled                                                                            --
+  GL.bindBuffer GL.ArrayBuffer $= Just buffer                                                                           --
+  GL.vertexAttribPointer loc   $= (GL.ToFloat, GL.VertexArrayDescriptor (fromIntegral count) GL.Float 0 GLUtil.offset0) --
 
 
 -- |
 attribute :: GL.Program -> String -> GL.BufferObject -> Int -> IO ()
 attribute program name buffer count = do
-	loc <- GL.get $ GL.attribLocation program name
-	bufferAttribute buffer loc count
+  loc <- GL.get $ GL.attribLocation program name
+  bufferAttribute buffer loc count
 
 
 -- |
 bindAttributes :: Mesh -> IO ()
 bindAttributes mesh = do
-	-- GLS.currentProgram $= Just (shader mesh)
-	Map.foldrWithKey reduce nothing (attributes mesh) -- TODO: Use Traversable instead (?)
-	where
-	   reduce key (loc, buff, count) acc = acc >> bufferAttribute buff loc count --
-	   nothing                           = return ()                             --
+  -- GLS.currentProgram $= Just (shader mesh)
+  Map.foldrWithKey reduce nothing (attributes mesh) -- TODO: Use Traversable instead (?)
+  where
+     reduce key (loc, buff, count) acc = acc >> bufferAttribute buff loc count --
+     nothing                           = return ()                             --
 
 
 -- |
 unbindAttributes :: Mesh -> IO ()
 unbindAttributes mesh = Map.foldrWithKey reduce nothing (attributes mesh)
-	where
-	   reduce key (loc, buff, count) acc = acc >> (GL.vertexAttribArray loc $= GL.Enabled) --
-	   nothing                           = return ()                                       --
+  where
+     reduce key (loc, buff, count) acc = acc >> (GL.vertexAttribArray loc $= GL.Enabled) --
+     nothing                           = return ()                                       --
 
 
 -- |
 withAttributes :: Mesh -> (Mesh -> IO ()) -> IO ()
 withAttributes mesh action = do
-	bindAttributes mesh
-	action mesh
-	unbindAttributes mesh
+  bindAttributes mesh
+  action mesh
+  unbindAttributes mesh
 
 
 -- |
@@ -127,10 +127,10 @@ withAttributes mesh action = do
 {-
 prepareTextured :: state -> IO ()
 prepareTextured _ = do
-	maybe
-	  (return ())
-	  (\(tex, coords) -> do
-	  	GL.bindBuffer GL.ArrayBuffer $= Just coords
-	  	GL.vertexAttribPointer (texattrib) $= (GL.ToFloat, GL.VertexArrayDescriptor 2 GL.Float 0 GLUtil.offset0))
-	  (liftM2 (,) (texture mesh) (texcoords mesh))
+  maybe
+    (return ())
+    (\(tex, coords) -> do
+      GL.bindBuffer GL.ArrayBuffer $= Just coords
+      GL.vertexAttribPointer (texattrib) $= (GL.ToFloat, GL.VertexArrayDescriptor 2 GL.Float 0 GLUtil.offset0))
+    (liftM2 (,) (texture mesh) (texcoords mesh))
 -}

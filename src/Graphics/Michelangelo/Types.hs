@@ -21,7 +21,8 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- GHC Pragmas
 --------------------------------------------------------------------------------------------------------------------------------------------
-
+{-# LANGUAGE TypeSynonymInstances #-} --
+{-# LANGUAGE FlexibleInstances    #-} --
 
 
 
@@ -35,7 +36,23 @@ module Graphics.Michelangelo.Types where
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
+import qualified Data.Map as Map
+import qualified Graphics.WaveFront.Parsers as WF
 
+import           Foreign.Storable                 (Storable)
+import           Foreign.Ptr                      (castPtr, Ptr())
+import qualified Foreign.Marshal.Utils as Marshal (with)
+
+import Linear.V3
+import Linear.Matrix
+
+import qualified Graphics.Rendering.OpenGL            as GL              --
+import           Graphics.Rendering.OpenGL            as GL              --
+import qualified Graphics.Rendering.OpenGL.GL.Shaders as GLS             --
+import qualified Graphics.Rendering.OpenGL.Raw        as GLRaw           --
+import qualified Graphics.Rendering.OpenGL.GL.Shaders.Uniform as Uniform --
+import           Graphics.Rendering.OpenGL.GL.Shaders.Uniform
+import           Graphics.GLUtil
 
 
 
@@ -78,6 +95,18 @@ data ShaderProgram = ShaderProgram { _program    :: GL.Program,
 -- type Uniform   = (GL.UniformLocation, UniformValue)         --
 type Attribute = (GL.AttribLocation,  GL.BufferObject, Int) -- TODO: Are there any non-buffer attribute types, separate type (?)
 
+-- Classes ---------------------------------------------------------------------------------------------------------------------------------
+
+-- |
+-- TODO: Better naming conventions
+-- TOOD: All uniform types (matrices, vectors, scalars, variable length)
+data UniformValue = UMatrix44 (M44 Float) |
+                    UVec3     (V3 Float)  |
+                    UFloat     Float      |
+                    UInt       Int
+                    deriving (Show)
+
+-- Instances -------------------------------------------------------------------------------------------------------------------------------
 
 -- |
 -- TODO: Make polymorphic (?)
