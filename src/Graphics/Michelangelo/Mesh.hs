@@ -13,6 +13,7 @@
 -- TODO | - Index buffers
 --        - Use lenses (?)
 --        - Move shader-specific stuff to Shader module
+--        - Proper logging
 
 -- SPEC | -
 --        -
@@ -31,6 +32,7 @@ import Linear.V3     --
 
 import qualified Data.Map.Strict as Map --
 
+import Control.Lens
 import Control.Monad (liftM2, liftM) --
 import Control.Applicative ((<*>))   --
 
@@ -38,14 +40,15 @@ import           Graphics.Rendering.OpenGL (($=))                        --
 import qualified Graphics.Rendering.OpenGL            as GL              --
 import qualified Graphics.Rendering.OpenGL.GL.Shaders as GLS             --
 import qualified Graphics.Rendering.OpenGL.GL.Shaders.Uniform as Uniform --
-import           Graphics.GLUtil.JuicyTextures                           --
+import           Graphics.GLUtil.JuicyTextures                           -- 
 
 import qualified Graphics.GLUtil as GLUtil --
 
-import Graphics.WaveFront.Load       as WFL   --
-import Graphics.WaveFront.Parsers    as WF    --
+import Graphics.WaveFront.Load       as WFL --
+import Graphics.WaveFront.Parsers    as WF  --
 
 import Graphics.Michelangelo.Types
+import Graphics.Michelangelo.Lenses
 import Graphics.Michelangelo.Shaders as Shade --
 
 
@@ -59,17 +62,15 @@ renderMesh :: Mesh -> IO ()
 renderMesh mesh = do
   GLUtil.printErrorMsg "Entering renderMesh"
   -- return $ (prepare mesh) <*> Just mesh
-  case prepare mesh of
-    Just action -> action mesh
-    _           -> return ()
+  maybe (return ()) ($ mesh) (mesh^.prepare)
   GLUtil.printErrorMsg "Shader program set"
 
   withAttributes mesh $ \ _ -> do
-    GLUtil.printErrorMsg "Entering withAttributes action"
-    Shade.setShaderUniforms (shader mesh) (Map.elems $ uniforms mesh) --
-    GLUtil.printErrorMsg "Uniforms set"
-    GL.drawArrays (primitive mesh) 0 (fromIntegral $ size mesh)       --
-    GLUtil.printErrorMsg "Arrays drawn"
+    GLUtil.printErrorMsg "Entering withAttributes action"                   --
+    Shade.setShaderUniforms (mesh^.shader) (Map.elems $ _meshUniforms mesh) --
+    GLUtil.printErrorMsg "Uniforms set"                                     --
+    GL.drawArrays (mesh^.primitive) 0 (fromIntegral $ mesh^.size)           --
+    GLUtil.printErrorMsg "The arrays have been rendered, my liege"          --
 
 
 -- |
@@ -97,7 +98,7 @@ attribute program name buffer count = do
 bindAttributes :: Mesh -> IO ()
 bindAttributes mesh = do
   -- GLS.currentProgram $= Just (shader mesh)
-  Map.foldrWithKey reduce nothing (attributes mesh) -- TODO: Use Traversable instead (?)
+  Map.foldrWithKey reduce nothing (mesh^.attributes) -- TODO: Use Traversable instead (?)
   where
      reduce key (loc, buff, count) acc = acc >> bufferAttribute buff loc count --
      nothing                           = return ()                             --
@@ -105,7 +106,7 @@ bindAttributes mesh = do
 
 -- |
 unbindAttributes :: Mesh -> IO ()
-unbindAttributes mesh = Map.foldrWithKey reduce nothing (attributes mesh)
+unbindAttributes mesh = Map.foldrWithKey reduce nothing (mesh^.attributes)
   where
      reduce key (loc, buff, count) acc = acc >> (GL.vertexAttribArray loc $= GL.Enabled) --
      nothing                           = return ()                                       --

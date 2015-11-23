@@ -79,43 +79,43 @@ import Graphics.Michelangelo.Types
 -- TODO: Use Monad transformer to make 'bailing-out' easier (?)
 createShaderProgram :: String -> String -> IO (Either [String] GL.Program)
 createShaderProgram vsource psource = do
-	putStrLn "Creating shader program"
-	program <- GL.createProgram
-	vshader <- GL.createShader VertexShader
-	pshader <- GL.createShader FragmentShader
+  putStrLn "Creating shader program"
+  program <- GL.createProgram
+  vshader <- GL.createShader VertexShader
+  pshader <- GL.createShader FragmentShader
 
-	case (vsource, psource) of
-		("", _) -> return $ Left ["Empty vertex shader source"]
-		(_, "") -> return $ Left ["Empty pixel shader source"]
-		_       -> do
-			putStrLn "Setting vertex shader source"
-			shaderSourceBS vshader $= packUtf8 vsource
+  case (vsource, psource) of
+    ("", _) -> return $ Left ["Empty vertex shader source"]
+    (_, "") -> return $ Left ["Empty pixel shader source"]
+    _       -> do
+      putStrLn "Setting vertex shader source"
+      shaderSourceBS vshader $= packUtf8 vsource
 
-			putStrLn "Compiling vertex shader"
-			compileShader vshader
+      putStrLn "Compiling vertex shader"
+      compileShader vshader
 
-			putStrLn "Setting fragment shader source"
-			shaderSourceBS pshader $= packUtf8 psource
-			compileShader pshader
+      putStrLn "Setting fragment shader source"
+      shaderSourceBS pshader $= packUtf8 psource
+      compileShader pshader
 
-			-- putStrLn "Compiling shaders..."
+      -- putStrLn "Compiling shaders..."
 
-			vstatus <- GL.get $ compileStatus vshader
-			printf "Vertex shader %s compiled successfully.\n" (if vstatus then "was" else "was not")
-			pstatus <- GL.get $ compileStatus pshader
-			printf "Vertex pixel %s compiled successfully.\n" (if pstatus then "was" else "was not")
+      vstatus <- GL.get $ compileStatus vshader
+      printf "Vertex shader %s compiled successfully.\n" (if vstatus then "was" else "was not")
+      pstatus <- GL.get $ compileStatus pshader
+      printf "Vertex pixel %s compiled successfully.\n" (if pstatus then "was" else "was not")
 
-			if vstatus && pstatus
-				then do
-					putStrLn "Successfully compiled shaders. Linking program..."
-					mapM (GL.attachShader program) [vshader, pshader]
+      if vstatus && pstatus
+        then do
+          putStrLn "Successfully compiled shaders. Linking program..."
+          mapM (GL.attachShader program) [vshader, pshader]
 
-					GL.linkProgram program
-					linked <- GL.get $ GL.linkStatus program
-					if linked
-						then return $ Right program
-						else mapM GL.get [GL.shaderInfoLog vshader, GL.shaderInfoLog pshader, GL.programInfoLog program] >>= return . Left
-				else mapM (GL.get . GL.shaderInfoLog) [vshader, pshader] >>= return . Left
+          GL.linkProgram program
+          linked <- GL.get $ GL.linkStatus program
+          if linked
+            then return $ Right program
+            else mapM GL.get [GL.shaderInfoLog vshader, GL.shaderInfoLog pshader, GL.programInfoLog program] >>= return . Left
+        else mapM (GL.get . GL.shaderInfoLog) [vshader, pshader] >>= return . Left
 
 
 -- |
@@ -123,27 +123,27 @@ createShaderProgram vsource psource = do
 -- TODO: Pass in uniforms by name or by location (?)
 setShaderUniforms :: GL.Program -> [(GL.UniformLocation, UniformValue)] -> IO ()
 setShaderUniforms theprogram theuniforms = do
-	-- Set uniforms
-	-- mapM ((>> printErrorMsg "Setting uniform") . uncurry uniform) theuniforms
-	-- TODO: Refactor
-	forM theuniforms $ \(loc, value) -> case value of
-		UMatrix44 mat -> uniform loc $= mat
-		UFloat    f   -> uniform loc $= f
-		UInt      i   -> uniform loc $= i
-		-- UVec vec -> uniform loc $= vec
-	return ()
+  -- Set uniforms
+  -- mapM ((>> printErrorMsg "Setting uniform") . uncurry uniform) theuniforms
+  -- TODO: Refactor
+  forM theuniforms $ \(loc, value) -> case value of
+    UMatrix44 mat -> uniform loc $= mat
+    UFloat    f   -> uniform loc $= f
+    UInt      i   -> uniform loc $= i
+    -- UVec vec -> uniform loc $= vec
+  return ()
 
 
 -- |
 loadShaderProgram :: String -> String -> IO (Either [String] GL.Program)
 loadShaderProgram vpath ppath = do
-	[vsource, psource] <- mapM readFile [vpath, ppath]
-	catch
-	  (createShaderProgram vsource psource)            --
-	  caught -- TODO: More elaborate exception message (?)
-	where
-	  caught :: IOException -> IO (Either [String] GL.Program)
-	  caught _ = return $ Left ["Unable to open file."]
+  [vsource, psource] <- mapM readFile [vpath, ppath]
+  catch
+    (createShaderProgram vsource psource)            --
+    caught -- TODO: More elaborate exception message (?)
+  where
+    caught :: IOException -> IO (Either [String] GL.Program)
+    caught _ = return $ Left ["Unable to open file."]
 
 
 
@@ -167,7 +167,7 @@ loadShaderProgram vpath ppath = do
 -- |
 -- TODO: Better names (?)
 -- class UniformValue u where
-	-- setUniform :: (Storable u) => GL.GLint -> GL.GLsizei -> Ptr GL.GLfloat -> IO ()
+  -- setUniform :: (Storable u) => GL.GLint -> GL.GLsizei -> Ptr GL.GLfloat -> IO ()
 
 
 -- Scalars
@@ -175,20 +175,20 @@ loadShaderProgram vpath ppath = do
 
 -- Vectors
 -- instance UniformValue (M44 Float) where
-	-- setUniform = GLRaw.glUniformMatrix3fv
+  -- setUniform = GLRaw.glUniformMatrix3fv
 
 
 -- Matrices
 -- instance UniformValue (M22 Float) where
-	-- setUniform = GLRaw.glUniformMatrix2fv
+  -- setUniform = GLRaw.glUniformMatrix2fv
 
 
 -- instance UniformValue (M33 Float) where
-	-- setUniform = GLRaw.glUniformMatrix3fv
+  -- setUniform = GLRaw.glUniformMatrix3fv
 
 
 -- instance UniformValue (M44 Float) where
-	-- setUniform = GLRaw.glUniformMatrix4fv
+  -- setUniform = GLRaw.glUniformMatrix4fv
 
 -- glUniform1f :: GLint -> GLfloat -> IO ()
 -- glUniform2f :: GLint -> GLfloat -> GLfloat -> IO ()

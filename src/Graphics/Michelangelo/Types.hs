@@ -69,15 +69,16 @@ data Entity = Entity {}
 -- TODO: Store render function (?)
 -- TODO: Restructure (?)
 -- TODO: Metadata (?)
-data Mesh = Mesh { texture    :: Maybe GL.TextureObject,   -- TODO: Allow more than one texture (?)
-                   primitive  :: GL.PrimitiveMode,         --
-                   attributes :: Map.Map String Attribute, --
-                   uniforms   :: Map.Map String (GL.UniformLocation, UniformValue),   --
-                   shader     :: GL.Program,               --
-                   prepare    :: Maybe (Mesh -> IO ()),    -- Optional rendering setup function
-                   centre     :: V3 Float,                 --
-                   bounds     :: WF.BoundingBox Float,     --
-                   size       :: Int                       --
+-- TODO: Less ugly field names (maybe tweak the name mangler?)
+data Mesh = Mesh { _meshTexture    :: Maybe GL.TextureObject,   -- TODO: Allow more than one texture (?)
+                   _meshPrimitive  :: GL.PrimitiveMode,         --
+                   _meshAttributes :: Map.Map String Attribute, --
+                   _meshUniforms   :: Map.Map String (GL.UniformLocation, UniformValue),   --
+                   _meshShader     :: GL.Program,               --
+                   _meshPrepare    :: Maybe (Mesh -> IO ()),    -- Optional rendering setup function
+                   _meshCentre     :: V3 Float,                 --
+                   _meshBounds     :: WF.BoundingBox Float,     --
+                   _meshSize       :: Int                       --
                  } --deriving (Show)
 
 
@@ -86,19 +87,22 @@ data Mesh = Mesh { texture    :: Maybe GL.TextureObject,   -- TODO: Allow more t
 
 
 -- |
-data ShaderProgram = ShaderProgram { _program    :: GL.Program,
-	                                   _attributes :: Map.Map String (GL.AttribLocation,  GL.VariableType),
-                                     _uniforms   :: Map.Map String (GL.UniformLocation, GL.VariableType)}
+-- TODO: Rename (?)
+-- TODO: Less ugly field names (maybe tweak the name mangler?)
+data ShaderProgram = ShaderProgram { _shaderProgramProgram    :: GL.Program,
+                                     _shaderProgramAttributes :: Map.Map String (GL.AttribLocation,  GL.VariableType),
+                                     _shaderProgramUniforms   :: Map.Map String (GL.UniformLocation, GL.VariableType)}
 
 
 -- |
 -- type Uniform   = (GL.UniformLocation, UniformValue)         --
-type Attribute = (GL.AttribLocation,  GL.BufferObject, Int) -- TODO: Are there any non-buffer attribute types, separate type (?)
+type Attribute = (GL.AttribLocation, GL.BufferObject, Int) -- TODO: Are there any non-buffer attribute types, separate type (?)
 
 -- Classes ---------------------------------------------------------------------------------------------------------------------------------
 
 -- |
 -- TODO: Better naming conventions
+-- TODO: Use type family (?)
 -- TOOD: All uniform types (matrices, vectors, scalars, variable length)
 data UniformValue = UMatrix44 (M44 Float) |
                     UVec3     (V3 Float)  |
@@ -115,16 +119,16 @@ data UniformValue = UMatrix44 (M44 Float) |
 -- TODO: Find out how to read uniform value
 -- instance GL.UniformComponent a => GL.Uniform (M44 a) where
 instance GL.Uniform (M44 Float) where
-	uniform (GL.UniformLocation loc) = GL.makeStateVar (error "Not implemented") (\u -> Marshal.with (transpose u) (\ptr -> GLRaw.glUniformMatrix4fv loc 1 0 (castPtr (ptr :: Ptr (M44 Float)))))
+  uniform (GL.UniformLocation loc) = GL.makeStateVar (error "Not implemented") (\u -> Marshal.with (transpose u) (\ptr -> GLRaw.glUniformMatrix4fv loc 1 0 (castPtr (ptr :: Ptr (M44 Float)))))
    -- uniformv loc count = uniform3v location count . (castPtr :: Ptr (Vertex3 b) -> Ptr b)
 
 
 instance GL.Uniform (Float) where
-	uniform (GL.UniformLocation loc) = GL.makeStateVar (error "Not implemented") (\f -> Marshal.with f (\ptr -> GLRaw.glUniform1fv loc 1 (castPtr (ptr :: Ptr (Float)))))
+  uniform (GL.UniformLocation loc) = GL.makeStateVar (error "Not implemented") (\f -> Marshal.with f (\ptr -> GLRaw.glUniform1fv loc 1 (castPtr (ptr :: Ptr (Float)))))
    -- uniformv loc count = uniform3v location count . (castPtr :: Ptr (Vertex3 b) -> Ptr b)
 
 
 -- |
 instance GL.Uniform (Int) where
-	uniform (GL.UniformLocation loc) = GL.makeStateVar (error "Not implemented") (\i -> Marshal.with i (\ptr -> GLRaw.glUniform1iv loc 1 (castPtr (ptr :: Ptr (Int)))))
+  uniform (GL.UniformLocation loc) = GL.makeStateVar (error "Not implemented") (\i -> Marshal.with i (\ptr -> GLRaw.glUniform1iv loc 1 (castPtr (ptr :: Ptr (Int)))))
    -- uniformv loc count = uniform3v location count . (castPtr :: Ptr (Vertex3 b) -> Ptr b)
