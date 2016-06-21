@@ -6,7 +6,9 @@ extra-deps:
   - OpenGLRaw-2.5.5.0
   - hpp-0.1.0.0
   - WaveFront-0.1.0.0
+  - Cartesian-0.2.1.0
 resolver: lts-3.5
 flags: {}
 packages:
 - '.'
+- location: C:/Users/Jonatan/Desktop/Haskell/modules/Cartesian

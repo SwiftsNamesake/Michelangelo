@@ -138,3 +138,27 @@ cube f side = cuboid f side side side
 -- TODO: Allow any kind of tessellation (?)
 cuboidIndices :: Integral i => [[[i]]]
 cuboidIndices = map triangles [[0,1,2,3], [4,5,6,7], [3,2,6,7], [0,1,5,4], [0,3,7,4], [1,2,6,5]] -- Top, bottom, Front, Back, Left, Right
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+-- | Indices for a shape extruded from a 2D polygon
+-- TODO: Figure out which types to use
+-- TODO: Generic 'stitching' of lid and bottom, counter-clockwise or clockwise (?)
+-- TODO: Generate vertices and indices separately
+extrude :: (Vector v, Fractional f) => (v -> v') -> v -> [v] -> [v']
+extrude f direction shape =
+  where
+    -- |
+    -- side ::
+    side a b = concat [[f a, f $ a + direction, f $ b + direction], [f a, f $ b + direction, f b]]
+
+    -- | Stitches together two polygons by successively connecting one edge from each shape with two adjacent triangles.
+    --   The end result is a rim joining the shapes, made out of a triangle strip.
+    -- TODO: Factor out 'looping' (ie. closing the loop)
+    stitch side' bottom lid = concat . pairwise side $ zip (close bottom) (close lid)
+
+    -- |
+    close shape' = shape' ++ [head shape']
+
+    -- |
+    rim = stitch _

@@ -49,10 +49,10 @@ import Linear.Matrix
 import qualified Graphics.Rendering.OpenGL            as GL              --
 import           Graphics.Rendering.OpenGL            as GL              --
 import qualified Graphics.Rendering.OpenGL.GL.Shaders as GLS             --
-import qualified Graphics.Rendering.OpenGL.Raw        as GLRaw           --
+import qualified Graphics.Rendering.OpenGL.Raw        as GLRaw           -- TODO: This breaks in the latest version (==3.2.0.0) of OpenGLRaw
 import qualified Graphics.Rendering.OpenGL.GL.Shaders.Uniform as Uniform --
-import           Graphics.Rendering.OpenGL.GL.Shaders.Uniform
-import           Graphics.GLUtil
+import           Graphics.Rendering.OpenGL.GL.Shaders.Uniform            --
+import           Graphics.GLUtil                                         --
 
 
 
@@ -119,16 +119,22 @@ data UniformValue = UMatrix44 (M44 Float) |
 -- TODO: Find out how to read uniform value
 -- instance GL.UniformComponent a => GL.Uniform (M44 a) where
 instance GL.Uniform (M44 Float) where
-  uniform (GL.UniformLocation loc) = GL.makeStateVar (error "Not implemented") (\u -> Marshal.with (transpose u) (\ptr -> GLRaw.glUniformMatrix4fv loc 1 0 (castPtr (ptr :: Ptr (M44 Float)))))
+  uniform (GL.UniformLocation loc) = GL.makeStateVar
+                                       (error "Not implemented")
+                                       (\u -> Marshal.with (transpose u) (\ptr -> GLRaw.glUniformMatrix4fv loc 1 0 (castPtr (ptr :: Ptr (M44 Float)))))
    -- uniformv loc count = uniform3v location count . (castPtr :: Ptr (Vertex3 b) -> Ptr b)
 
 
 instance GL.Uniform (Float) where
-  uniform (GL.UniformLocation loc) = GL.makeStateVar (error "Not implemented") (\f -> Marshal.with f (\ptr -> GLRaw.glUniform1fv loc 1 (castPtr (ptr :: Ptr (Float)))))
+  uniform (GL.UniformLocation loc) = GL.makeStateVar
+                                       (error "Not implemented")
+                                       (\f -> Marshal.with f (\ptr -> GLRaw.glUniform1fv loc 1 (castPtr (ptr :: Ptr (Float)))))
    -- uniformv loc count = uniform3v location count . (castPtr :: Ptr (Vertex3 b) -> Ptr b)
 
 
 -- |
 instance GL.Uniform (Int) where
-  uniform (GL.UniformLocation loc) = GL.makeStateVar (error "Not implemented") (\i -> Marshal.with i (\ptr -> GLRaw.glUniform1iv loc 1 (castPtr (ptr :: Ptr (Int)))))
+  uniform (GL.UniformLocation loc) = GL.makeStateVar
+                                       (error "Not implemented")
+                                       (\i -> Marshal.with i (\ptr -> GLRaw.glUniform1iv loc 1 (castPtr (ptr :: Ptr (Int)))))
    -- uniformv loc count = uniform3v location count . (castPtr :: Ptr (Vertex3 b) -> Ptr b)

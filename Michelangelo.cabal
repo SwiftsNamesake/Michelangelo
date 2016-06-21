@@ -63,14 +63,15 @@ library
   other-extensions:    TypeSynonymInstances, FlexibleInstances
 
   -- Other library packages from which modules are imported.
-  build-depends:       base <= 4.8.1.0,
+  build-depends:       base == 4.*,
                        lens <= 4.13.0.0,
                        bytestring,
                        linear,
                        OpenGL,
                        GLUtil,
-                       OpenGLRaw,
+                       OpenGLRaw <= 2.6.*,
                        containers,
+                       Cartesian,
                        WaveFront
 
   -- Directories containing source files.

@@ -40,7 +40,7 @@ import           Graphics.Rendering.OpenGL (($=))                        --
 import qualified Graphics.Rendering.OpenGL            as GL              --
 import qualified Graphics.Rendering.OpenGL.GL.Shaders as GLS             --
 import qualified Graphics.Rendering.OpenGL.GL.Shaders.Uniform as Uniform --
-import           Graphics.GLUtil.JuicyTextures                           -- 
+import           Graphics.GLUtil.JuicyTextures                           --
 
 import qualified Graphics.GLUtil as GLUtil --
 
