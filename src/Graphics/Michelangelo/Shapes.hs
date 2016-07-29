@@ -145,20 +145,26 @@ cuboidIndices = map triangles [[0,1,2,3], [4,5,6,7], [3,2,6,7], [0,1,5,4], [0,3,
 -- TODO: Figure out which types to use
 -- TODO: Generic 'stitching' of lid and bottom, counter-clockwise or clockwise (?)
 -- TODO: Generate vertices and indices separately
-extrude :: (Vector v, Fractional f) => (v -> v') -> v -> [v] -> [v']
-extrude f direction shape =
-  where
-    -- |
-    -- side ::
-    side a b = concat [[f a, f $ a + direction, f $ b + direction], [f a, f $ b + direction, f b]]
-
-    -- | Stitches together two polygons by successively connecting one edge from each shape with two adjacent triangles.
-    --   The end result is a rim joining the shapes, made out of a triangle strip.
-    -- TODO: Factor out 'looping' (ie. closing the loop)
-    stitch side' bottom lid = concat . pairwise side $ zip (close bottom) (close lid)
-
-    -- |
-    close shape' = shape' ++ [head shape']
-
-    -- |
-    rim = stitch _
+-- extrude :: (Vector v, Fractional f) => (v -> v') -> v -> [v] -> [v']
+-- extrude :: (Num v, Fractional f) => (v -> v') -> v -> [v] -> [v']
+-- extrude f direction shape = undefined
+--   where
+--     -- |
+--     -- side ::
+--     side a b = concat [[f a, f $ a + direction, f $ b + direction], [f a, f $ b + direction, f b]]
+--
+--     -- | Stitches together two polygons by successively connecting one edge from each shape with two adjacent triangles.
+--     --   The end result is a rim joining the shapes, made out of a triangle strip.
+--     -- TODO: Factor out 'looping' (ie. closing the loop)
+--     -- Found hole `_pairwise' with type: (v -> v -> [v']) -> [(a1, b)] -> t0 [a]
+--     stitch side' bottom lid = concat . pairwise (uncurry side) $ zip (close bottom) (close lid)
+--
+--     -- |
+--     -- TODO: I wonder how many times I've written this function (factor out)
+--     pairwise f xs = zipWith f xs (tail xs)
+--
+--     -- |
+--     close shape' = shape' ++ [head shape']
+--
+--     -- |
+--     rim = stitch undefined

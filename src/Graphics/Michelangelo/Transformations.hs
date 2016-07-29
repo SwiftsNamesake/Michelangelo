@@ -47,7 +47,7 @@ import Graphics.Michelangelo.Types
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- |
 rotateX :: (Floating n, Epsilon n) => n -> M44 n
-rotateX  = rotateAxis (V3 1 0 0)
+rotateX = rotateAxis (V3 1 0 0)
 
 
 -- |
@@ -61,4 +61,4 @@ rotateZ  = rotateAxis (V3 0 0 1)
 
 
 -- |
-rotateAxis axis = m33_to_m44 . fromQuaternion . axisAngle
+rotateAxis axis = m33_to_m44 . fromQuaternion . axisAngle axis

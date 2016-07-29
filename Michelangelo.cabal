@@ -69,7 +69,7 @@ library
                        linear,
                        OpenGL,
                        GLUtil,
-                       OpenGLRaw <= 2.6.*,
+                       OpenGLRaw <= 2.6.1.1,
                        containers,
                        Cartesian,
                        WaveFront
